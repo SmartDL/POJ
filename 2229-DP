@@ -1,0 +1,22 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n;
+	int sumsets[1000001];	//有的编译器编译不了1百万的数组，但是poj可以 
+	cin>>n;
+	sumsets[1]=1;
+	for(int i=2;i<=n;i++)
+	{
+		if(i%2!=0)	//如果n是奇数，那么组成n的序列个数和n-1相等
+					//只需要在所有n-1的序列前都加上一个1 
+			sumsets[i]=sumsets[i-1];
+		else	
+				//如果n偶数，那么所有组成n的序列中，
+				//开头为1的=(n-1的序列)前面加1，
+				//(开头不为1的所有元素)/2=n/2的所有组成序列 
+			sumsets[i]=(sumsets[i-1]+sumsets[i/2])%1000000000; //题目output：print only last 9 digits 
+	}
+	cout<<sumsets[n]<<endl;
+	return 0;
+}
