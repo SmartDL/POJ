@@ -1,0 +1,51 @@
+#include<iostream>
+#include<cstdio>
+#include<queue>
+using namespace std;
+typedef pair<int,int> P;
+struct cmp{
+	bool operator()(P a,P b)
+	{
+		return a.first<b.first;
+	}
+};
+int main()
+{
+	int n;
+	int tank=0;
+	int pos=0,num=0;
+	int l,p; 
+	priority_queue<P,vector<P>,cmp> sta;
+	priority_queue<int> que;
+	cin>>n;
+	for(int i=0;i<n;i++)
+	{
+		int x,y;
+		scanf("%d%d",&x,&y);
+		sta.push(make_pair(x,y));
+	}
+	cin>>l>>p;		//p是车上的汽油量 
+	sta.push(make_pair(0,0));//把终点当作最后一站放入，这里终点到终点的距离是0 
+	for(int i=0;i<=n;i++)
+	{
+		pair<int,int> x=sta.top();
+		sta.pop();
+		int d=l-x.first-pos;//pos代表当前位置 
+		while(p<d)//把问题变换成“在到达加油站i时，就获得了一次在之后任何时候都可以加Bi单位汽油的权利” 
+		{
+			if(que.empty())
+			{
+				cout<<"-1"<<endl;
+				return 0;
+			}
+			p+=que.top();
+			que.pop();
+			num++;
+		}
+		pos=l-x.first;
+		p-=d;
+		que.push(x.second); 
+	}
+	cout<<num<<endl;
+	return 0;
+}
